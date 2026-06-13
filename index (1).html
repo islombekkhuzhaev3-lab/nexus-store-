@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS HUB — Ijtimoiy Platforma</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b12;--bg2:#0d1018;--surface:#111520;--card:#161b28;--card2:#1c2235;
+  --border:#1e2540;--border2:#252e4a;
+  --accent:#ff6200;--accent2:#00c8ff;--accent3:#7c3aed;
+  --green:#00e676;--red:#ff3d6e;--yellow:#ffd600;
+  --text:#e8eaf6;--muted:#5c6480;--soft:#8891b0;
+  --tg:#229ED9;--wa:#25D366;--gem:#4285F4;
+  --r:12px;--tr:.18s ease;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+::selection{background:rgba(255,98,0,.3);}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* ── HEADER ── */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(8,11,18,.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  height:54px;display:flex;align-items:center;padding:0 16px;gap:12px;
+}
+.logo{
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;
+  color:var(--accent);letter-spacing:3px;white-space:nowrap;cursor:pointer;
+  text-shadow:0 0 20px rgba(255,98,0,.4);
+}
+.logo b{color:var(--accent2);}
+.hdr-srch{
+  flex:1;max-width:340px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:22px;padding:0 14px;height:34px;
+  display:flex;align-items:center;gap:7px;
+  transition:border-color var(--tr);
+}
+.hdr-srch:focus-within{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(0,200,255,.08);}
+.hdr-srch input{background:none;border:none;outline:none;color:var(--text);font-size:12.5px;width:100%;}
+.hdr-srch input::placeholder{color:var(--muted);}
+.hdr-nav{display:flex;align-items:center;gap:2px;margin-left:auto;}
+.hn-btn{
+  background:none;border:none;cursor:pointer;color:var(--soft);
+  padding:6px 10px;border-radius:8px;font-size:11.5px;font-weight:500;
+  display:flex;align-items:center;gap:5px;transition:all var(--tr);white-space:nowrap;
+}
+.hn-btn:hover{background:var(--surface);color:var(--text);}
+.hn-btn.on{color:var(--accent);}
+.hdr-actions{display:flex;align-items:center;gap:8px;}
+.hdr-coin{
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#fff;font-size:11px;font-weight:700;
+  padding:5px 11px;border-radius:18px;cursor:pointer;
+  display:flex;align-items:center;gap:4px;white-space:nowrap;
+  transition:opacity var(--tr);
+}
+.hdr-coin:hover{opacity:.85;}
+.hdr-notif{
+  position:relative;width:32px;height:32px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;transition:all var(--tr);
+}
+.hdr-notif:hover{border-color:var(--accent);background:var(--card);}
+.notif-badge{
+  position:absolute;top:-2px;right:-2px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--red);border:2px solid var(--bg);
+  font-size:8px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.hdr-ava{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;position:relative;flex-shrink:0;
+  transition:box-shadow var(--tr);
+}
+.hdr-ava:hover{box-shadow:0 0 0 3px rgba(255,98,0,.3);}
+.online-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid var(--bg);}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1320px;margin:0 auto;padding:70px 14px 80px;display:grid;grid-template-columns:230px 1fr 270px;gap:16px;align-items:start;}
+
+/* ── CARD BASE ── */
+.c{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.c-hd{
+  padding:11px 14px 9px;border-bottom:1px solid var(--border);
+  font-size:10.5px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.c-hd a{color:var(--accent2);font-size:10.5px;font-weight:500;text-decoration:none;text-transform:none;letter-spacing:0;}
+
+/* ── LEFT SIDEBAR ── */
+.left{display:flex;flex-direction:column;gap:12px;position:sticky;top:66px;}
+
+/* Profile */
+.prof{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;text-align:center;}
+.prof-bg{
+  height:62px;
+  background:linear-gradient(135deg,#ff6200,#7c3aed,#00c8ff);
+  position:relative;
+}
+.prof-bg::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.03) 8px,rgba(255,255,255,.03) 16px);}
+.prof-av-w{margin-top:-25px;display:flex;justify-content:center;position:relative;z-index:1;}
+.prof-av{
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent3));
+  border:3px solid var(--card);
+  display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;
+}
+.prof-av .online-dot{width:10px;height:10px;}
+.prof-body{padding:8px 12px 12px;}
+.prof-nm{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;margin-bottom:2px;}
+.prof-hd{font-size:10px;color:var(--muted);margin-bottom:10px;}
+.prof-st{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.sb{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 4px;}
+.sb-n{font-size:15px;font-weight:800;color:var(--accent);}
+.sb-l{font-size:9.5px;color:var(--muted);}
+.btn-p{width:100%;padding:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:opacity var(--tr);}
+.btn-p:hover{opacity:.85;}
+
+/* Side nav */
+.snav{display:flex;flex-direction:column;}
+.si{
+  display:flex;align-items:center;gap:9px;padding:9px 14px;
+  font-size:12.5px;font-weight:500;color:var(--soft);
+  cursor:pointer;border-left:2px solid transparent;
+  transition:all var(--tr);text-decoration:none;
+}
+.si:hover{background:var(--card2);color:var(--text);}
+.si.on{color:var(--accent);background:rgba(255,98,0,.07);border-left-color:var(--accent);}
+.si-ic{font-size:14px;width:18px;text-align:center;}
+.si-b{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px;}
+.si-b.tg{background:var(--tg);}
+.si-b.wa{background:var(--wa);}
+.si-b.new{background:var(--accent2);color:#000;}
+
+/* Messenger quick links */
+.msg-links{display:flex;gap:8px;padding:10px 12px;}
+.msg-link{
+  flex:1;padding:8px 6px;border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:9px;font-weight:700;cursor:pointer;transition:all var(--tr);
+  border:1px solid var(--border);background:var(--surface);
+}
+.msg-link:hover{transform:translateY(-2px);}
+.msg-link.tg{color:var(--tg);border-color:rgba(34,158,217,.3);}
+.msg-link.tg:hover{background:rgba(34,158,217,.1);}
+.msg-link.wa{color:var(--wa);border-color:rgba(37,211,102,.3);}
+.msg-link.wa:hover{background:rgba(37,211,102,.1);}
+.msg-link.em{color:var(--accent);border-color:rgba(255,98,0,.3);}
+.msg-link.em:hover{background:rgba(255,98,0,.1);}
+.msg-link span{font-size:20px;}
+
+/* Promo */
+.promo{
+  background:linear-gradient(135deg,#160800,#2d0e47);
+  border:1px solid rgba(255,98,0,.4);border-radius:var(--r);padding:12px;
+  position:relative;overflow:hidden;
+}
+.promo::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(60deg,transparent,transparent 12px,rgba(255,98,0,.03) 12px,rgba(255,98,0,.03) 24px);}
+.promo-t{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--accent);margin-bottom:2px;position:relative;}
+.promo-s{font-size:10px;color:var(--soft);margin-bottom:10px;position:relative;}
+.promo-b{background:var(--accent);border:none;border-radius:7px;padding:6px 12px;color:#fff;font-size:10px;font-weight:800;cursor:pointer;position:relative;}
+
+/* ── FEED ── */
+.feed{display:flex;flex-direction:column;gap:12px;}
+.page{display:flex;flex-direction:column;gap:12px;}
+
+/* Stories */
+.stories{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;}
+.stories::-webkit-scrollbar{height:2px;}
+.st-item{flex-shrink:0;text-align:center;cursor:pointer;}
+.st-ring{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:2px;margin-bottom:4px;}
+.st-in{width:100%;height:100%;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;}
+.st-in img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.st-nm{font-size:9.5px;color:var(--soft);}
+
+/* Composer */
+.comp{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:11px 12px;}
+.comp-row{display:flex;align-items:center;gap:8px;}
+.comp-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.comp-in{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:8px 13px;color:var(--text);font-size:12.5px;outline:none;transition:border-color var(--tr);}
+.comp-in:focus{border-color:var(--accent2);}
+.comp-acts{display:flex;gap:6px;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+.ca{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:10.5px;color:var(--soft);cursor:pointer;transition:all var(--tr);}
+.ca:hover{border-color:var(--accent2);color:var(--accent2);}
+.ca.tg-btn{border-color:rgba(34,158,217,.4);color:var(--tg);}
+.ca.tg-btn:hover{background:rgba(34,158,217,.1);}
+.ca.wa-btn{border-color:rgba(37,211,102,.4);color:var(--wa);}
+.ca.wa-btn:hover{background:rgba(37,211,102,.1);}
+.comp-send{background:linear-gradient(135deg,var(--accent),#ff9f43);border:none;border-radius:7px;padding:5px 14px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;margin-left:auto;}
+
+/* Post */
+.post{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color var(--tr);}
+.post:hover{border-color:rgba(255,98,0,.25);}
+.ph{display:flex;align-items:center;gap:9px;padding:11px 12px 8px;}
+.pa{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:2px solid var(--border);background:linear-gradient(135deg,var(--accent),var(--accent3));}
+.pm{flex:1;}
+.p-auth{font-size:12.5px;font-weight:600;}
+.p-time{font-size:10px;color:var(--muted);margin-top:1px;}
+.p-more{background:none;border:none;cursor:pointer;color:var(--muted);font-size:17px;padding:3px 7px;border-radius:5px;transition:all var(--tr);}
+.p-more:hover{background:var(--card2);color:var(--text);}
+.p-txt{padding:0 12px 9px;font-size:13px;line-height:1.65;color:#bfc4d8;}
+.p-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.p-mw{position:relative;}
+.p-mb{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.75);color:var(--accent);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:3px;}
+.p-acts{display:flex;border-top:1px solid var(--border);}
+.pab{flex:1;background:none;border:none;cursor:pointer;color:var(--muted);padding:9px 4px;font-size:10.5px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:4px;transition:all var(--tr);border-right:1px solid var(--border);}
+.pab:last-child{border-right:none;}
+.pab:hover{background:var(--card2);color:var(--accent);}
+.pab.liked{color:var(--red);}
+.pab.tg-act{color:var(--tg);}
+.pab.wa-act{color:var(--wa);}
+
+/* Share popup */
+.share-popup{
+  position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity var(--tr);
+}
+.share-popup.open{opacity:1;pointer-events:auto;}
+.share-box{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  width:320px;padding:20px;
+  transform:scale(.95);transition:transform var(--tr);
+}
+.share-popup.open .share-box{transform:scale(1);}
+.share-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+.share-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
+.share-opt{
+  padding:14px 8px;border-radius:10px;text-align:center;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface);transition:all var(--tr);
+}
+.share-opt:hover{transform:translateY(-3px);}
+.share-opt .ico{font-size:24px;margin-bottom:5px;}
+.share-opt .lbl{font-size:10px;font-weight:700;}
+.share-opt.tg-opt{border-color:rgba(34,158,217,.3);color:var(--tg);}
+.share-opt.tg-opt:hover{background:rgba(34,158,217,.1);}
+.share-opt.wa-opt{border-color:rgba(37,211,102,.3);color:var(--wa);}
+.share-opt.wa-opt:hover{background:rgba(37,211,102,.1);}
+.share-opt.copy-opt{border-color:var(--border2);color:var(--soft);}
+.share-opt.copy-opt:hover{background:var(--card2);color:var(--text);}
+.share-link-row{display:flex;gap:8px;}
+.share-link-inp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--soft);font-size:11px;outline:none;}
+.share-copy-btn{background:var(--accent2);border:none;border-radius:8px;padding:8px 12px;color:#000;font-size:11px;font-weight:700;cursor:pointer;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px;border-radius:5px;}
+.modal-close:hover{background:var(--card2);color:var(--text);}
+
+/* Product grid */
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pt{background:var(--card);padding:10px;cursor:pointer;transition:background var(--tr);}
+.pt:hover{background:var(--card2);}
+.pt img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:7px;margin-bottom:6px;}
+.pt-nm{font-size:11px;font-weight:600;margin-bottom:3px;}
+.pt-pr{font-size:12px;font-weight:800;color:var(--accent);}
+.pt-old{font-size:10px;color:var(--muted);text-decoration:line-through;margin-left:4px;}
+.pt-btn{margin-top:6px;width:100%;padding:5px;background:rgba(255,98,0,.1);border:1px solid rgba(255,98,0,.25);border-radius:5px;color:var(--accent);font-size:10px;font-weight:700;cursor:pointer;transition:all var(--tr);}
+.pt-btn:hover{background:var(--accent);color:#fff;}
+.pt-btn.added{background:var(--green);border-color:var(--green);color:#000;}
+
+/* Music */
+.music-card{background:linear-gradient(135deg,#090c12,#14103a);border:1px solid var(--accent3);border-radius:var(--r);overflow:hidden;}
+.mc-cov{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;}
+.mc-cov img{width:100%;height:100%;object-fit:cover;filter:brightness(.5);}
+.mc-ov{position:absolute;inset:0;background:linear-gradient(to top,#090c12,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;}
+.mc-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px;}
+.mc-art{font-size:11px;color:#a78bfa;}
+.mc-ctrls{padding:11px 12px;display:flex;flex-direction:column;gap:9px;}
+.prog{width:100%;height:3px;background:rgba(255,255,255,.1);border-radius:2px;cursor:pointer;}
+.prog-fill{height:100%;width:32%;background:linear-gradient(90deg,var(--accent3),var(--accent2));border-radius:2px;transition:width .1s;}
+.prog-times{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);}
+.mc-btns{display:flex;align-items:center;justify-content:center;gap:16px;}
+.mctrl{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:14px;transition:color var(--tr);}
+.mctrl:hover{color:var(--text);}
+.mctrl.play{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent3),var(--accent2));color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;}
+
+/* ── RIGHT ── */
+.right{display:flex;flex-direction:column;gap:12px;position:sticky;top:66px;}
+
+/* Gemini/Claude AI Chat */
+.ai-widget{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;}
+.ai-hd{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.ai-hd-ico{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  flex-shrink:0;
+}
+.ai-hd-ico.gem{background:linear-gradient(135deg,#4285F4,#34A853,#EA4335,#FBBC05);}
+.ai-hd-ico.cl{background:linear-gradient(135deg,var(--accent),var(--accent3));}
+.ai-hd-txt{flex:1;}
+.ai-hd-nm{font-size:12px;font-weight:700;}
+.ai-hd-sub{font-size:10px;color:var(--muted);}
+.ai-selector{display:flex;gap:1px;padding:8px 12px;background:var(--surface);border-bottom:1px solid var(--border);}
+.ai-sel-btn{flex:1;padding:5px 6px;border:none;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;background:none;color:var(--muted);transition:all var(--tr);}
+.ai-sel-btn.on.gem{background:rgba(66,133,244,.2);color:#4285F4;}
+.ai-sel-btn.on.cl{background:rgba(255,98,0,.15);color:var(--accent);}
+.ai-sel-btn.on.tg{background:rgba(34,158,217,.15);color:var(--tg);}
+.ai-msgs{height:200px;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+.ai-msg{display:flex;gap:7px;align-items:flex-start;}
+.ai-msg.usr{flex-direction:row-reverse;}
+.ai-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.ai-av.bot-gem{background:linear-gradient(135deg,#4285F4,#34A853);}
+.ai-av.bot-cl{background:linear-gradient(135deg,var(--accent),var(--accent3));}
+.ai-av.u{background:linear-gradient(135deg,var(--accent),#ff9f43);}
+.ai-bub{max-width:82%;padding:7px 10px;border-radius:10px;font-size:11.5px;line-height:1.55;}
+.ai-msg.bot .ai-bub{background:var(--surface);border:1px solid var(--border);}
+.ai-msg.usr .ai-bub{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#fff;}
+.typing-dots{display:flex;gap:3px;align-items:center;padding:2px 0;}
+.typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--accent2);animation:tdot 1.1s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(-4px);opacity:1;}}
+.ai-qp{display:flex;flex-wrap:wrap;gap:4px;padding:7px 12px;border-top:1px solid var(--border);}
+.qp{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3px 8px;font-size:10px;color:var(--soft);cursor:pointer;transition:all var(--tr);}
+.qp:hover{border-color:var(--accent);color:var(--accent);}
+.ai-inp-row{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);}
+.ai-inp{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:6px 11px;color:var(--text);font-size:11.5px;outline:none;transition:border-color var(--tr);}
+.ai-inp:focus{border-color:var(--accent2);}
+.ai-send{background:linear-gradient(135deg,var(--accent2),var(--accent3));border:none;border-radius:18px;padding:6px 12px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+
+/* Telegram Widget */
+.tg-widget{background:var(--card);border:1px solid rgba(34,158,217,.3);border-radius:var(--r);overflow:hidden;}
+.tg-hd{background:linear-gradient(135deg,rgba(34,158,217,.15),rgba(34,158,217,.05));padding:10px 14px;border-bottom:1px solid rgba(34,158,217,.2);display:flex;align-items:center;gap:8px;}
+.tg-hd-ico{width:32px;height:32px;border-radius:50%;background:var(--tg);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tg-body{padding:12px;}
+.tg-ch-item{display:flex;align-items:center;gap:9px;padding:7px;border-radius:8px;cursor:pointer;transition:background var(--tr);border:1px solid var(--border);margin-bottom:7px;background:var(--surface);}
+.tg-ch-item:hover{background:rgba(34,158,217,.08);border-color:rgba(34,158,217,.3);}
+.tg-ch-ava{width:34px;height:34px;border-radius:50%;background:var(--tg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.tg-ch-info{flex:1;}
+.tg-ch-nm{font-size:12px;font-weight:600;color:var(--text);}
+.tg-ch-sub{font-size:10px;color:var(--muted);}
+.tg-ch-cnt{font-size:10px;color:var(--tg);font-weight:700;}
+.tg-join{width:100%;padding:8px;background:linear-gradient(135deg,var(--tg),#1a7ab8);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity var(--tr);}
+.tg-join:hover{opacity:.85;}
+
+/* WhatsApp widget */
+.wa-widget{background:var(--card);border:1px solid rgba(37,211,102,.3);border-radius:var(--r);overflow:hidden;}
+.wa-hd{background:linear-gradient(135deg,rgba(37,211,102,.12),rgba(37,211,102,.05));padding:10px 14px;border-bottom:1px solid rgba(37,211,102,.2);display:flex;align-items:center;gap:8px;}
+.wa-hd-ico{width:32px;height:32px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.wa-body{padding:12px;}
+.wa-preview{background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.2);border-radius:8px;padding:10px;margin-bottom:10px;}
+.wa-msg{font-size:11.5px;color:var(--soft);line-height:1.5;margin-bottom:8px;}
+.wa-time{font-size:9.5px;color:var(--muted);}
+.wa-join{width:100%;padding:8px;background:linear-gradient(135deg,var(--wa),#1a9e4e);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity var(--tr);}
+.wa-join:hover{opacity:.85;}
+
+/* Friends */
+.f-list{display:flex;flex-direction:column;}
+.f-item{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;transition:background var(--tr);}
+.f-item:hover{background:var(--card2);}
+.f-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;position:relative;}
+.f-inf{flex:1;}
+.f-nm{font-size:11.5px;font-weight:600;}
+.f-st{font-size:10px;color:var(--muted);}
+
+/* Tags */
+.tagcloud{padding:9px 12px;display:flex;flex-wrap:wrap;gap:5px;}
+.tag{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:3px 9px;font-size:10.5px;color:var(--soft);cursor:pointer;transition:all var(--tr);}
+.tag:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── PAGES ── */
+
+/* Settings Page */
+.settings-wrap{display:flex;flex-direction:column;gap:14px;}
+.settings-section{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.ss-hd{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.ss-body{padding:4px 0;}
+.setting-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.sr-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.sr-ico.orange{background:rgba(255,98,0,.15);}
+.sr-ico.blue{background:rgba(0,200,255,.15);}
+.sr-ico.tg{background:rgba(34,158,217,.15);}
+.sr-ico.wa{background:rgba(37,211,102,.15);}
+.sr-ico.gem{background:rgba(66,133,244,.15);}
+.sr-ico.purple{background:rgba(124,58,237,.15);}
+.sr-ico.red{background:rgba(255,61,110,.15);}
+.sr-txt{flex:1;}
+.sr-nm{font-size:12.5px;font-weight:600;}
+.sr-desc{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.sr-right{display:flex;align-items:center;gap:8px;}
+/* Toggle */
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.tog-sl{position:absolute;inset:0;background:var(--border2);border-radius:11px;transition:.3s;}
+.tog-sl::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle input:checked+.tog-sl{background:var(--accent);}
+.toggle input:checked+.tog-sl::before{transform:translateX(18px);}
+.toggle input:checked+.tog-sl.tg-c{background:var(--tg);}
+.toggle input:checked+.tog-sl.wa-c{background:var(--wa);}
+.toggle input:checked+.tog-sl.gem-c{background:var(--gem);}
+/* Input fields */
+.sr-inp{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 10px;color:var(--text);font-size:11.5px;outline:none;min-width:140px;transition:border-color var(--tr);}
+.sr-inp:focus{border-color:var(--accent2);}
+.sr-sel{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 10px;color:var(--text);font-size:11.5px;outline:none;cursor:pointer;}
+.sr-save{padding:6px 14px;background:linear-gradient(135deg,var(--accent),#ff9f43);border:none;border-radius:7px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;transition:opacity var(--tr);}
+.sr-save:hover{opacity:.85;}
+.connect-btn{padding:6px 12px;border:none;border-radius:7px;font-size:10.5px;font-weight:700;cursor:pointer;transition:all var(--tr);}
+.connect-btn.tg-cb{background:var(--tg);color:#fff;}
+.connect-btn.wa-cb{background:var(--wa);color:#fff;}
+.connect-btn.gem-cb{background:var(--gem);color:#fff;}
+.connect-btn.connected{background:rgba(0,230,118,.15);border:1px solid var(--green);color:var(--green);}
+.connect-btn:hover{opacity:.85;}
+/* Stats chart */
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:40px;padding:0 4px;}
+.mc-bar{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(to top,var(--accent),#ff9f43);opacity:.6;transition:opacity var(--tr);cursor:pointer;}
+.mc-bar:hover{opacity:1;}
+
+/* Shop Page */
+.shop-wrap{display:flex;flex-direction:column;gap:12px;}
+.shop-filters{display:flex;gap:6px;flex-wrap:wrap;}
+.sf-btn{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--soft);cursor:pointer;transition:all var(--tr);}
+.sf-btn:hover,.sf-btn.on{background:rgba(255,98,0,.1);border-color:var(--accent);color:var(--accent);}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+.shop-tile{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all var(--tr);}
+.shop-tile:hover{border-color:rgba(255,98,0,.4);transform:translateY(-2px);box-shadow:0 4px 20px rgba(255,98,0,.1);}
+.st-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
+.st-body{padding:9px 10px;}
+
+/* Music Page */
+.music-page{display:flex;flex-direction:column;gap:12px;}
+
+/* ── NOTIFICATIONS ── */
+.toast{
+  position:fixed;bottom:16px;right:16px;z-index:900;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;display:flex;align-items:center;gap:9px;
+  font-size:12px;box-shadow:0 6px 24px rgba(0,0,0,.5);
+  transform:translateX(120%);transition:transform .28s ease;min-width:200px;max-width:280px;
+}
+.toast.show{transform:translateX(0);}
+.toast-ico{font-size:16px;flex-shrink:0;}
+
+/* ── MODAL (Profile) ── */
+.modal-bg{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity var(--tr);}
+.modal-bg.open{opacity:1;pointer-events:auto;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;width:320px;overflow:hidden;transform:scale(.94);transition:transform var(--tr);}
+.modal-bg.open .modal{transform:scale(1);}
+.modal-hd{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;}
+.modal-body{padding:16px;}
+.mf{margin-bottom:12px;}
+.mf label{display:block;font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.mf input,.mf textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-size:12.5px;outline:none;font-family:inherit;transition:border-color var(--tr);}
+.mf input:focus,.mf textarea:focus{border-color:var(--accent2);}
+.mf textarea{resize:vertical;min-height:65px;}
+.modal-save{width:100%;padding:9px;background:linear-gradient(135deg,var(--accent),#ff9f43);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;}
+
+/* ── CART ── */
+.cart-pop{
+  position:fixed;top:60px;right:14px;z-index:600;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  width:290px;box-shadow:0 10px 40px rgba(0,0,0,.6);
+  transform:translateY(-8px) scale(.96);opacity:0;pointer-events:none;transition:all var(--tr);
+}
+.cart-pop.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+.cart-hd-row{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center;}
+.cart-list{max-height:200px;overflow-y:auto;padding:4px 0;}
+.cart-item{display:flex;align-items:center;gap:8px;padding:7px 12px;}
+.ci-img{width:36px;height:28px;border-radius:5px;object-fit:cover;}
+.ci-nm{font-size:11px;flex:1;}
+.ci-pr{font-size:11px;font-weight:700;color:var(--accent);}
+.ci-rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:1px 5px;border-radius:3px;}
+.ci-rm:hover{background:var(--card2);color:var(--red);}
+.cart-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;}
+.cart-foot{padding:10px 12px;border-top:1px solid var(--border);}
+.cart-tot{display:flex;justify-content:space-between;font-size:12px;margin-bottom:9px;}
+.cart-tot span:last-child{font-weight:800;color:var(--accent);}
+.cart-buy{width:100%;padding:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;}
+
+/* ── BOTTOM NAV ── */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(8,11,18,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:5px 0;}
+.bnav-inner{display:flex;justify-content:space-around;}
+.bb{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--soft);font-size:17px;padding:4px 12px;cursor:pointer;transition:color var(--tr);}
+.bb span{font-size:8.5px;font-weight:600;}
+.bb.on{color:var(--accent);}
+
+/* PILL badges */
+.pill{display:inline-flex;align-items:center;gap:2px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;vertical-align:middle;}
+.pill.or{background:rgba(255,98,0,.15);color:var(--accent);}
+.pill.bl{background:rgba(0,200,255,.15);color:var(--accent2);}
+.pill.gr{background:rgba(0,230,118,.15);color:var(--green);}
+.pill.tg{background:rgba(34,158,217,.15);color:var(--tg);}
+.pill.wa{background:rgba(37,211,102,.15);color:var(--wa);}
+
+/* Pulse animation for live indicator */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.6);}}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.3s infinite;margin-right:5px;vertical-align:middle;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.post,.c{animation:fadeUp .3s ease both;}
+
+/* Responsive */
+@media(max-width:1080px){.wrap{grid-template-columns:210px 1fr;}.right{display:none;}}
+@media(max-width:720px){.wrap{grid-template-columns:1fr;padding-bottom:70px;}.left{display:none;}.bnav{display:block;}.hdr-nav{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo" onclick="goPage('feed')">NEXUS<b>HUB</b></div>
+  <div class="hdr-srch">
+    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="color:var(--muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Qidirish..." id="srchInp" onkeydown="if(event.key==='Enter')doSearch()">
+  </div>
+  <nav class="hdr-nav">
+    <button class="hn-btn on" id="hn-feed" onclick="goPage('feed',this)">🏠 Lenta</button>
+    <button class="hn-btn" id="hn-shop" onclick="goPage('shop',this)">🛒 Do'kon</button>
+    <button class="hn-btn" id="hn-music" onclick="goPage('music',this)">🎵 Musiqa</button>
+    <button class="hn-btn" id="hn-ai" onclick="goPage('ai',this)">🤖 AI Chat</button>
+    <button class="hn-btn" id="hn-settings" onclick="goPage('settings',this)">⚙️ Sozlamalar</button>
+  </nav>
+  <div class="hdr-actions">
+    <div class="hdr-coin" onclick="toggleCart()">🪙 <span id="hCoins">100</span> NC</div>
+    <div class="hdr-notif" onclick="toast('🔔','3 ta yangi xabar!')">
+      🔔<div class="notif-badge">3</div>
+    </div>
+    <div class="hdr-ava" onclick="openModal('profModal')">🚗<div class="online-dot"></div></div>
+  </div>
+</header>
+
+<!-- CART POPUP -->
+<div class="cart-pop" id="cartPop">
+  <div class="cart-hd-row">🛒 Savat <span id="cartCnt" style="color:var(--muted);font-weight:400;font-size:11px">(0)</span></div>
+  <div class="cart-list" id="cartList"><div class="cart-empty">Savat bo'sh</div></div>
+  <div class="cart-foot">
+    <div class="cart-tot"><span>Jami:</span><span id="cartTot">$0</span></div>
+    <button class="cart-buy" onclick="checkout()">💳 Buyurtma berish</button>
+  </div>
+</div>
+
+<!-- SHARE POPUP -->
+<div class="share-popup" id="sharePopup">
+  <div class="share-box">
+    <div class="share-title">📤 Ulashish <button class="modal-close" onclick="closeShare()">×</button></div>
+    <div class="share-opts">
+      <div class="share-opt tg-opt" onclick="shareToTG()">
+        <div class="ico">✈️</div><div class="lbl">Telegram</div>
+      </div>
+      <div class="share-opt wa-opt" onclick="shareToWA()">
+        <div class="ico">💬</div><div class="lbl">WhatsApp</div>
+      </div>
+      <div class="share-opt copy-opt" onclick="copyLink()">
+        <div class="ico">🔗</div><div class="lbl">Nusxa</div>
+      </div>
+    </div>
+    <div class="share-link-row">
+      <input class="share-link-inp" id="shareLinkInp" value="https://nexushub.uz/post/1" readonly>
+      <button class="share-copy-btn" onclick="copyLink()">Nusxa</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-bg" id="profModal">
+  <div class="modal">
+    <div class="modal-hd">✏️ Profil <button class="modal-close" onclick="closeModal('profModal')">×</button></div>
+    <div class="modal-body">
+      <div class="mf"><label>Ism</label><input id="pName" value="Cyber Driver"></div>
+      <div class="mf"><label>Handle</label><input id="pHandle" value="@nexushub_uz"></div>
+      <div class="mf"><label>Bio</label><textarea id="pBio">Antigravity Hub. PPF | Tuning | Musiqa 🚗⚡</textarea></div>
+      <div class="mf"><label>Shahar</label><input id="pCity" value="Toshkent"></div>
+      <button class="modal-save" onclick="saveProfil()">💾 Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-ico" id="tIco">✅</span><span id="tTxt">OK</span></div>
+
+<!-- LAYOUT -->
+<div class="wrap">
+
+<!-- LEFT -->
+<aside class="left">
+  <div class="prof">
+    <div class="prof-bg"></div>
+    <div class="prof-av-w"><div class="prof-av">🚗<div class="online-dot"></div></div></div>
+    <div class="prof-body">
+      <div class="prof-nm" id="sNm">CYBER DRIVER</div>
+      <div class="prof-hd" id="sHd">@nexushub_uz</div>
+      <div class="prof-st">
+        <div class="sb"><div class="sb-n">42</div><div class="sb-l">Klass</div></div>
+        <div class="sb"><div class="sb-n">128</div><div class="sb-l">Do'stlar</div></div>
+        <div class="sb"><div class="sb-n" id="sPost">4</div><div class="sb-l">Postlar</div></div>
+        <div class="sb"><div class="sb-n">🪙<span id="sCoins">100</span></div><div class="sb-l">NC</div></div>
+      </div>
+      <button class="btn-p" onclick="openModal('profModal')">✏️ Tahrirlash</button>
+    </div>
+  </div>
+
+  <!-- Messenger quick links -->
+  <div class="c">
+    <div class="c-hd">📲 Messenjerlar</div>
+    <div class="msg-links">
+      <div class="msg-link tg" onclick="openTelegram()"><span>✈️</span>Telegram</div>
+      <div class="msg-link wa" onclick="openWhatsApp()"><span>💬</span>WhatsApp</div>
+      <div class="msg-link em" onclick="goPage('ai')"><span>🤖</span>AI Chat</div>
+    </div>
+  </div>
+
+  <div class="c">
+    <div class="snav">
+      <a class="si on" href="#" onclick="goPage('feed',null,this);return false"><span class="si-ic">🏠</span>Bosh sahifa</a>
+      <a class="si" href="#" onclick="openModal('profModal');return false"><span class="si-ic">👤</span>Profil</a>
+      <a class="si" href="#" onclick="goPage('shop',null,this);return false"><span class="si-ic">🛒</span>Do'kon<span class="si-b new">12</span></a>
+      <a class="si" href="#" onclick="goPage('music',null,this);return false"><span class="si-ic">🎵</span>Musiqa</a>
+      <a class="si" href="#" onclick="goPage('ai',null,this);return false"><span class="si-ic">🤖</span>AI Yordamchi<span class="si-b new">AI</span></a>
+      <a class="si" href="#" onclick="openTelegram();return false"><span class="si-ic">✈️</span>Telegram<span class="si-b tg">TG</span></a>
+      <a class="si" href="#" onclick="openWhatsApp();return false"><span class="si-ic">💬</span>WhatsApp<span class="si-b wa">WA</span></a>
+      <a class="si" href="#" onclick="goPage('settings',null,this);return false"><span class="si-ic">⚙️</span>Sozlamalar</a>
+    </div>
+  </div>
+
+  <div class="promo">
+    <div class="promo-t">PREMIUM PPF</div>
+    <div class="promo-s">Gloss+Satin — 20% chegirma</div>
+    <button class="promo-b" onclick="goPage('shop')">🚀 Buyurtma</button>
+  </div>
+</aside>
+
+<!-- CENTER -->
+<main id="mainFeed">
+
+  <!-- ═══ FEED PAGE ═══ -->
+  <div id="pg-feed" class="page">
+    <!-- Stories -->
+    <div class="stories">
+      <div class="st-item" onclick="toast('➕','Story qo\'shish')"><div class="st-ring" style="background:linear-gradient(135deg,#333,#444)"><div class="st-in" style="font-size:22px">➕</div></div><div class="st-nm">Qo'shish</div></div>
+      <div class="st-item" onclick="toast('🚗','Porsche GT3 story')"><div class="st-ring"><div class="st-in"><img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=100&auto=format&q=80" alt=""></div></div><div class="st-nm">Porsche</div></div>
+      <div class="st-item" onclick="toast('✈️','Telegram kanalida ko\'rish')"><div class="st-ring" style="background:linear-gradient(135deg,var(--tg),#1a7ab8)"><div class="st-in" style="font-size:18px">✈️</div></div><div class="st-nm">TG kanal</div></div>
+      <div class="st-item" onclick="toast('💬','WhatsApp guruhida ko\'rish')"><div class="st-ring" style="background:linear-gradient(135deg,var(--wa),#1a9e4e)"><div class="st-in" style="font-size:18px">💬</div></div><div class="st-nm">WA guruh</div></div>
+      <div class="st-item" onclick="toast('🎵','Radio yoqildi')"><div class="st-ring" style="background:linear-gradient(135deg,var(--accent3),var(--accent2))"><div class="st-in">🎵</div></div><div class="st-nm">Radio</div></div>
+      <div class="st-item" onclick="toast('🤖','Gemini AI')"><div class="st-ring" style="background:linear-gradient(135deg,#4285F4,#34A853)"><div class="st-in" style="font-size:18px">🤖</div></div><div class="st-nm">Gemini</div></div>
+    </div>
+
+    <!-- Composer -->
+    <div class="comp">
+      <div class="comp-row">
+        <div class="comp-av">🚗</div>
+        <input class="comp-in" id="compIn" placeholder="Nima bo'layapti? Postingizni yozing..." onkeydown="if(event.key==='Enter')postSubmit()">
+      </div>
+      <div class="comp-acts">
+        <button class="ca" onclick="addToPost('📸')">📸 Rasm</button>
+        <button class="ca" onclick="addToPost('🎵')">🎵 Musiqa</button>
+        <button class="ca" onclick="addToPost('🚗')">🚗 Mashina</button>
+        <button class="ca tg-btn" onclick="shareToTG()">✈️ Telegram</button>
+        <button class="ca wa-btn" onclick="shareToWA()">💬 WhatsApp</button>
+        <button class="comp-send" onclick="postSubmit()">▶ Yuborish</button>
+      </div>
+    </div>
+
+    <!-- Posts -->
+    <div id="postsFeed">
+      <!-- Post 1 -->
+      <div class="post">
+        <div class="ph">
+          <div class="pa">🚗</div>
+          <div class="pm"><div class="p-auth">Cyber Driver <span class="pill or">● Premium</span></div><div class="p-time">Bugun 14:20 · Toshkent</div></div>
+          <button class="p-more">⋯</button>
+        </div>
+        <div class="p-txt">Porsche 911 GT3 RS — Gloss PPF o'rnatish tamom! 🔥 100% himoya. <span style="color:var(--accent2)">#PPF #Porsche #Antigravity</span></div>
+        <div class="p-mw"><img class="p-img" src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&auto=format&q=80" alt=""><div class="p-mb">📹 JARAYON</div></div>
+        <div class="p-acts">
+          <button class="pab" onclick="likePost(this,124)">❤️ <span>124</span></button>
+          <button class="pab" onclick="toast('💬','42 izoh')">💬 42</button>
+          <button class="pab tg-act" onclick="shareToTG('Porsche GT3 PPF jarayoni!')">✈️ TG</button>
+          <button class="pab wa-act" onclick="shareToWA('Porsche GT3 PPF jarayoni!')">💬 WA</button>
+          <button class="pab" onclick="openShare()">📤 Share</button>
+        </div>
+      </div>
+
+      <!-- Music post -->
+      <div class="music-card">
+        <div class="mc-cov"><img src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800&auto=format&q=80" alt="">
+          <div class="mc-ov"><div class="mc-title" id="tr-title">Antigravity Drift</div><div class="mc-art" id="tr-art">DJ Antigravity · 2026</div></div>
+        </div>
+        <div class="mc-ctrls">
+          <div class="prog" onclick="seekProg(event,this)"><div class="prog-fill" id="pf"></div></div>
+          <div class="prog-times"><span id="pt-cur">01:12</span><span>03:42</span></div>
+          <div class="mc-btns">
+            <button class="mctrl" onclick="toast('🔀','Shuffle')">🔀</button>
+            <button class="mctrl" onclick="prevTr()">⏮</button>
+            <button class="mctrl play" id="mainPB" onclick="togglePlay()">▶</button>
+            <button class="mctrl" onclick="nextTr()">⏭</button>
+            <button class="mctrl" onclick="toast('🔁','Repeat')">🔁</button>
+          </div>
+        </div>
+        <div class="p-acts" style="border-top:1px solid rgba(124,58,237,.25)">
+          <button class="pab" onclick="likePost(this,86)">❤️ <span>86</span></button>
+          <button class="pab tg-act" onclick="shareToTG('Antigravity Drift — yangi track!')">✈️ TG</button>
+          <button class="pab wa-act" onclick="shareToWA('Yangi musiqa: Antigravity Drift')">💬 WA</button>
+          <button class="pab" onclick="goPage('music')">▶️ Playlist</button>
+        </div>
+      </div>
+
+      <!-- Products post -->
+      <div class="post">
+        <div class="ph">
+          <div class="pa" style="background:linear-gradient(135deg,var(--accent2),var(--accent3))">🛒</div>
+          <div class="pm"><div class="p-auth">Antigravity Do'kon <span class="pill bl">Rasmiy</span></div><div class="p-time">Bugun 10:00</div></div>
+          <button class="p-more" onclick="goPage('shop')">→</button>
+        </div>
+        <div class="p-txt">🔥 Yangi PPF kolleksiya — 20% chegirma! Hozir buyurtma bering.</div>
+        <div class="prod-grid">
+          <div class="pt"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&auto=format&q=80" alt=""><div class="pt-nm">Gloss PPF</div><div><span class="pt-pr">$850</span><span class="pt-old">$1,100</span></div><button class="pt-btn" onclick="addCart(this,'Gloss PPF Premium',850,'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=80&auto=format&q=80')">🛒 Savatga</button></div>
+          <div class="pt"><img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=400&auto=format&q=80" alt=""><div class="pt-nm">Satin PPF</div><div><span class="pt-pr">$920</span><span class="pt-old">$1,200</span></div><button class="pt-btn" onclick="addCart(this,'Satin Matte PPF',920,'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=80&auto=format&q=80')">🛒 Savatga</button></div>
+        </div>
+        <div class="p-acts">
+          <button class="pab" onclick="likePost(this,56)">❤️ <span>56</span></button>
+          <button class="pab tg-act" onclick="shareToTG('Chegirmalar! PPF 20% off')">✈️ TG</button>
+          <button class="pab wa-act" onclick="shareToWA('Chegirmalar! PPF 20% off')">💬 WA</button>
+          <button class="pab" style="color:var(--accent);font-weight:700" onclick="goPage('shop')">🛒 Hammasi →</button>
+        </div>
+      </div>
+
+      <!-- Review post -->
+      <div class="post">
+        <div class="ph">
+          <div class="pa" style="background:linear-gradient(135deg,var(--green),var(--accent2));font-size:13px">👑</div>
+          <div class="pm"><div class="p-auth">Tuning_Uz <span class="pill gr">● Online</span></div><div class="p-time">Kecha 21:45</div></div>
+          <button class="p-more">⋯</button>
+        </div>
+        <div class="p-txt">Antigravity Hub'da Satin PPF — sifat a'lo! 💯 Tavsiya etaman.<br><span style="color:var(--accent2)">#Review #PPF #Toshkent</span></div>
+        <div style="padding:0 12px 10px"><div style="background:rgba(0,230,118,.08);border:1px solid var(--green);border-radius:7px;padding:7px 10px;font-size:11.5px;color:var(--green)">⭐ 5/5 — Tavsiya etaman</div></div>
+        <div class="p-acts">
+          <button class="pab" onclick="likePost(this,34)">❤️ <span>34</span></button>
+          <button class="pab tg-act" onclick="shareToTG('5/5 sharh! Antigravity Hub')">✈️ TG</button>
+          <button class="pab wa-act" onclick="shareToWA('5/5 sharh! Antigravity Hub')">💬 WA</button>
+          <button class="pab" onclick="openShare()">📤 Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SHOP PAGE ═══ -->
+  <div id="pg-shop" class="page" style="display:none">
+    <div class="c">
+      <div class="c-hd">🛒 Do'kon — PPF & Detailing</div>
+      <div style="padding:12px">
+        <div class="shop-filters" id="shopFilters">
+          <button class="sf-btn on" onclick="filterShop('all',this)">Hammasi</button>
+          <button class="sf-btn" onclick="filterShop('ppf',this)">PPF</button>
+          <button class="sf-btn" onclick="filterShop('ceramic',this)">Ceramic</button>
+          <button class="sf-btn" onclick="filterShop('tinting',this)">Tinting</button>
+          <button class="sf-btn" onclick="filterShop('acc',this)">Aksessuarlar</button>
+        </div>
+      </div>
+      <div class="shop-grid" id="shopGrid" style="padding:0 12px 14px"></div>
+    </div>
+  </div>
+
+  <!-- ═══ MUSIC PAGE ═══ -->
+  <div id="pg-music" class="page" style="display:none">
+    <div class="music-card">
+      <div class="mc-cov"><img id="mpImg" src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800&auto=format&q=80" alt="">
+        <div class="mc-ov"><div class="mc-title" id="mp-title">Antigravity Drift</div><div class="mc-art" id="mp-art">DJ Antigravity · 2026</div></div>
+      </div>
+      <div class="mc-ctrls">
+        <div class="prog" onclick="seekProg(event,this)"><div class="prog-fill" id="mpf"></div></div>
+        <div class="prog-times"><span id="mp-cur">01:12</span><span id="mp-dur">03:42</span></div>
+        <div class="mc-btns">
+          <button class="mctrl" onclick="toast('🔀','Shuffle')">🔀</button>
+          <button class="mctrl" onclick="prevTr()">⏮</button>
+          <button class="mctrl play" id="mpPB" onclick="togglePlay()">▶</button>
+          <button class="mctrl" onclick="nextTr()">⏭</button>
+          <button class="mctrl" onclick="toast('🔁','Repeat')">🔁</button>
+        </div>
+      </div>
+    </div>
+    <div class="c"><div class="c-hd">🎵 Playlist</div><div id="playlistEl" style="padding:4px 0"></div></div>
+  </div>
+
+  <!-- ═══ AI PAGE ═══ -->
+  <div id="pg-ai" class="page" style="display:none">
+    <div class="c" style="overflow:visible">
+      <div class="c-hd">
+        <span><span class="live-dot"></span>AI Yordamchi</span>
+        <span id="aiModelLbl" style="font-size:10px;color:var(--accent2);text-transform:none;letter-spacing:0">Gemini Pro</span>
+      </div>
+      <!-- AI model selector -->
+      <div style="display:flex;gap:6px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--border)">
+        <button class="ai-sel-btn on gem" id="abtn-gem" onclick="setAIModel('gem')">🔷 Gemini</button>
+        <button class="ai-sel-btn" id="abtn-cl" onclick="setAIModel('cl')">🔶 Claude</button>
+        <button class="ai-sel-btn" id="abtn-tg" onclick="setAIModel('tg')">✈️ TG Bot</button>
+      </div>
+      <!-- Messages -->
+      <div class="ai-msgs" id="aiMsgsFull" style="height:360px"></div>
+      <!-- Quick prompts -->
+      <div class="ai-qp" id="aiQP">
+        <button class="qp" onclick="sendQ('PPF narxlari qancha?')">💰 PPF narx</button>
+        <button class="qp" onclick="sendQ('BMW M5 uchun qaysi PPF?')">🚗 BMW uchun</button>
+        <button class="qp" onclick="sendQ('Ceramic coating nima?')">✨ Ceramic nima?</button>
+        <button class="qp" onclick="sendQ('Satin va Gloss farqi?')">🎨 Satin vs Gloss</button>
+        <button class="qp" onclick="sendQ('O\'rnatish qancha vaqt?')">⏱ Vaqt?</button>
+        <button class="qp" onclick="sendQ('Kafolat bormi?')">🛡 Kafolat?</button>
+      </div>
+      <!-- Input -->
+      <div class="ai-inp-row">
+        <input class="ai-inp" id="aiInpFull" placeholder="Savolingizni yozing..." onkeydown="if(event.key==='Enter')sendAI()">
+        <button class="ai-send" onclick="sendAI()">Yuborish →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SETTINGS PAGE ═══ -->
+  <div id="pg-settings" class="page" style="display:none">
+    <div class="settings-wrap">
+
+      <!-- Profile settings -->
+      <div class="settings-section">
+        <div class="ss-hd">👤 Profil Sozlamalari</div>
+        <div class="ss-body">
+          <div class="setting-row">
+            <div class="sr-ico orange">👤</div>
+            <div class="sr-txt"><div class="sr-nm">Ism</div><div class="sr-desc">Profilingizda ko'rinadigan ism</div></div>
+            <div class="sr-right"><input class="sr-inp" id="st-name" value="Cyber Driver"><button class="sr-save" onclick="saveSetting('name')">Saqlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico blue">🌍</div>
+            <div class="sr-txt"><div class="sr-nm">Shahar</div><div class="sr-desc">Joylashuvingiz</div></div>
+            <div class="sr-right"><input class="sr-inp" id="st-city" value="Toshkent"><button class="sr-save" onclick="saveSetting('city')">Saqlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico orange">🔔</div>
+            <div class="sr-txt"><div class="sr-nm">Bildirishnomalar</div><div class="sr-desc">Push xabarnomalar</div></div>
+            <div class="sr-right"><label class="toggle"><input type="checkbox" checked onchange="togSetting('notif',this)"><span class="tog-sl"></span></label></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico purple">🌙</div>
+            <div class="sr-txt"><div class="sr-nm">Qorong'i rejim</div><div class="sr-desc">Joriy: Qorong'i</div></div>
+            <div class="sr-right"><label class="toggle"><input type="checkbox" checked onchange="togSetting('dark',this)"><span class="tog-sl"></span></label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Telegram settings -->
+      <div class="settings-section">
+        <div class="ss-hd" style="color:var(--tg)">✈️ Telegram Integratsiya</div>
+        <div class="ss-body">
+          <div class="setting-row">
+            <div class="sr-ico tg">✈️</div>
+            <div class="sr-txt"><div class="sr-nm">Telegram Bot Token</div><div class="sr-desc">@BotFather dan olingan token</div></div>
+            <div class="sr-right" style="flex-direction:column;align-items:flex-end;gap:5px">
+              <input class="sr-inp" id="tg-token" placeholder="123456:ABC-DEF...">
+              <button class="sr-save" onclick="saveTGToken()">Ulash</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico tg">📢</div>
+            <div class="sr-txt"><div class="sr-nm">Kanal/Guruh Username</div><div class="sr-desc">@nexushub_uz yoki Chat ID</div></div>
+            <div class="sr-right"><input class="sr-inp" id="tg-chat" placeholder="@nexushub_uz"><button class="sr-save" onclick="saveTGChat()">Saqlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico tg">🔄</div>
+            <div class="sr-txt"><div class="sr-nm">Auto-ulashish</div><div class="sr-desc">Postlarni TG ga avtomatik yuborish</div></div>
+            <div class="sr-right"><label class="toggle"><input type="checkbox" id="tg-auto" onchange="togSetting('tgAuto',this)"><span class="tog-sl tg-c"></span></label></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico tg">🔗</div>
+            <div class="sr-txt"><div class="sr-nm">Kanal Havolasi</div><div class="sr-desc">Telegram kanalingiz</div></div>
+            <div class="sr-right">
+              <button class="connect-btn tg-cb" id="tg-connect-btn" onclick="connectTG()">✈️ Telegram ochish</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp settings -->
+      <div class="settings-section">
+        <div class="ss-hd" style="color:var(--wa)">💬 WhatsApp Integratsiya</div>
+        <div class="ss-body">
+          <div class="setting-row">
+            <div class="sr-ico wa">📱</div>
+            <div class="sr-txt"><div class="sr-nm">Telefon raqam</div><div class="sr-desc">WhatsApp raqamingiz (+998...)</div></div>
+            <div class="sr-right"><input class="sr-inp" id="wa-phone" placeholder="+998901234567"><button class="sr-save" onclick="saveWAPhone()">Saqlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico wa">👥</div>
+            <div class="sr-txt"><div class="sr-nm">Guruh havolasi</div><div class="sr-desc">WhatsApp guruhingiz invite link</div></div>
+            <div class="sr-right"><input class="sr-inp" id="wa-group" placeholder="chat.whatsapp.com/..."><button class="sr-save" onclick="saveWAGroup()">Saqlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico wa">🔄</div>
+            <div class="sr-txt"><div class="sr-nm">Share tugmasi</div><div class="sr-desc">Postlarda WA share ko'rsatish</div></div>
+            <div class="sr-right"><label class="toggle"><input type="checkbox" checked id="wa-show" onchange="togSetting('waShow',this)"><span class="tog-sl wa-c"></span></label></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico wa">🔗</div>
+            <div class="sr-txt"><div class="sr-nm">WhatsApp ochish</div><div class="sr-desc">Mening WhatsApp kontaktim</div></div>
+            <div class="sr-right"><button class="connect-btn wa-cb" onclick="openWhatsApp()">💬 WhatsApp</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gemini AI settings -->
+      <div class="settings-section">
+        <div class="ss-hd" style="color:var(--gem)">🔷 Gemini AI Sozlamalari</div>
+        <div class="ss-body">
+          <div class="setting-row">
+            <div class="sr-ico gem">🔑</div>
+            <div class="sr-txt"><div class="sr-nm">Gemini API Key</div><div class="sr-desc">Google AI Studio dan oling</div></div>
+            <div class="sr-right" style="flex-direction:column;align-items:flex-end;gap:5px">
+              <input class="sr-inp" id="gem-key" type="password" placeholder="AIzaSy...">
+              <button class="sr-save" onclick="saveGemKey()">Saqlash</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico gem">🧠</div>
+            <div class="sr-txt"><div class="sr-nm">Model</div><div class="sr-desc">Gemini versiyasi</div></div>
+            <div class="sr-right">
+              <select class="sr-sel" id="gem-model" onchange="saveGemModel()">
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                <option value="gemini-1.5-pro" selected>Gemini 1.5 Pro</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico gem">💬</div>
+            <div class="sr-txt"><div class="sr-nm">Tizim xabari (Prompt)</div><div class="sr-desc">AI uchun rol va kontekst</div></div>
+            <div class="sr-right"><button class="sr-save" onclick="editSysPrompt()">Tahrirlash</button></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico orange">🔶</div>
+            <div class="sr-txt"><div class="sr-nm">Claude API (Anthropic)</div><div class="sr-desc">claude-sonnet-4-6 — aktiv</div></div>
+            <div class="sr-right"><span class="connect-btn connected">✅ Ulangan</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App settings -->
+      <div class="settings-section">
+        <div class="ss-hd">📊 Statistika & Xavfsizlik</div>
+        <div class="ss-body">
+          <div class="setting-row">
+            <div class="sr-ico blue">📈</div>
+            <div class="sr-txt"><div class="sr-nm">Haftalik tashrif</div><div class="sr-desc">So'nggi 7 kun</div></div>
+            <div class="sr-right">
+              <div class="mini-chart">
+                <div class="mc-bar" style="height:40%" title="Dush"></div>
+                <div class="mc-bar" style="height:60%" title="Sesh"></div>
+                <div class="mc-bar" style="height:45%" title="Chor"></div>
+                <div class="mc-bar" style="height:80%" title="Pay"></div>
+                <div class="mc-bar" style="height:55%" title="Jum"></div>
+                <div class="mc-bar" style="height:100%" title="Shan"></div>
+                <div class="mc-bar" style="height:70%;opacity:1" title="Yak"></div>
+              </div>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico red">🔒</div>
+            <div class="sr-txt"><div class="sr-nm">Ikki faktorli autentifikatsiya</div><div class="sr-desc">2FA SMS orqali</div></div>
+            <div class="sr-right"><label class="toggle"><input type="checkbox" onchange="togSetting('2fa',this)"><span class="tog-sl"></span></label></div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico purple">🌐</div>
+            <div class="sr-txt"><div class="sr-nm">Til</div><div class="sr-desc">Interfeys tili</div></div>
+            <div class="sr-right">
+              <select class="sr-sel" onchange="setLang(this.value)">
+                <option value="uz" selected>🇺🇿 O'zbek</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="en">🇬🇧 English</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="sr-ico red">🗑</div>
+            <div class="sr-txt"><div class="sr-nm">Keshni tozalash</div><div class="sr-desc">Saqlangan ma'lumotlarni o'chirish</div></div>
+            <div class="sr-right"><button class="sr-save" style="background:linear-gradient(135deg,var(--red),#c0392b)" onclick="clearCache()">Tozalash</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App info -->
+      <div class="c" style="padding:14px 16px;text-align:center;color:var(--muted);font-size:11px">
+        <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:var(--accent);margin-bottom:4px">NEXUS HUB v2.0</div>
+        <div>OK.ru + Somon.tj + Telegram + WhatsApp + Gemini AI</div>
+        <div style="margin-top:4px">© 2026 Antigravity Hub · Toshkent, O'zbekiston</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- RIGHT SIDEBAR -->
+<aside class="right">
+
+  <!-- AI Chat widget -->
+  <div class="ai-widget">
+    <div class="ai-hd">
+      <div class="ai-hd-ico gem" id="aiWidgetIco">G</div>
+      <div class="ai-hd-txt">
+        <div class="ai-hd-nm" id="aiWidgetNm">Gemini Pro</div>
+        <div class="ai-hd-sub"><span class="live-dot" style="width:5px;height:5px"></span>Aktiv · Javob tayyor</div>
+      </div>
+    </div>
+    <div class="ai-selector">
+      <button class="ai-sel-btn on gem" id="sw-gem" onclick="switchAIWidget('gem')">🔷 Gemini</button>
+      <button class="ai-sel-btn" id="sw-cl" onclick="switchAIWidget('cl')">🔶 Claude</button>
+      <button class="ai-sel-btn" id="sw-tg" onclick="switchAIWidget('tg')">✈️ TG</button>
+    </div>
+    <div class="ai-msgs" id="sideAIMsgs" style="height:170px"></div>
+    <div class="ai-qp">
+      <button class="qp" onclick="sideQ('PPF narxi?')">💰 Narx</button>
+      <button class="qp" onclick="sideQ('Qaysi PPF yaxshi?')">🚗 Tavsiya</button>
+      <button class="qp" onclick="sideQ('Kafolat?')">🛡 Kafolat</button>
+    </div>
+    <div class="ai-inp-row">
+      <input class="ai-inp" id="sideAIIn" placeholder="Savol bering..." onkeydown="if(event.key==='Enter')sendSideAI()">
+      <button class="ai-send" onclick="sendSideAI()">→</button>
+    </div>
+  </div>
+
+  <!-- Telegram widget -->
+  <div class="tg-widget">
+    <div class="tg-hd">
+      <div class="tg-hd-ico">✈️</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--tg)">Telegram</div>
+        <div style="font-size:10px;color:var(--soft)">Kanallar va guruhlar</div>
+      </div>
+    </div>
+    <div class="tg-body">
+      <div class="tg-ch-item" onclick="openTelegram()">
+        <div class="tg-ch-ava">🚗</div>
+        <div class="tg-ch-info">
+          <div class="tg-ch-nm">Antigravity Hub</div>
+          <div class="tg-ch-sub">PPF yangiliklari · Rasmiy kanal</div>
+        </div>
+        <div class="tg-ch-cnt">+1.2K</div>
+      </div>
+      <div class="tg-ch-item" onclick="openTelegram()">
+        <div class="tg-ch-ava" style="background:linear-gradient(135deg,#229ED9,#1a7ab8)">🏎</div>
+        <div class="tg-ch-info">
+          <div class="tg-ch-nm">Tuning Uzbekistan</div>
+          <div class="tg-ch-sub">Auto jamoat guruh</div>
+        </div>
+        <div class="tg-ch-cnt">+8.4K</div>
+      </div>
+      <button class="tg-join" onclick="openTelegram()">✈️ Telegram kanalga o'tish</button>
+    </div>
+  </div>
+
+  <!-- WhatsApp widget -->
+  <div class="wa-widget">
+    <div class="wa-hd">
+      <div class="wa-hd-ico">💬</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--wa)">WhatsApp</div>
+        <div style="font-size:10px;color:var(--soft)">Guruh va chat</div>
+      </div>
+    </div>
+    <div class="wa-body">
+      <div class="wa-preview">
+        <div class="wa-msg">🚗 Antigravity Hub WhatsApp guruhiga xush kelibsiz! PPF, tuning, chegirmalar haqida birinchi bo'lib xabardor bo'ling.</div>
+        <div class="wa-time">+48 a'zo · Faol</div>
+      </div>
+      <button class="wa-join" onclick="openWhatsApp()">
+        <span>💬</span> WhatsApp guruhga qo'shilish
+      </button>
+    </div>
+  </div>
+
+  <!-- Online friends -->
+  <div class="c">
+    <div class="c-hd">🟢 Online <a href="#" onclick="toast('👥','+128 do\'st');return false">+128</a></div>
+    <div class="f-list">
+      <div class="f-item"><div class="f-av" style="background:linear-gradient(135deg,var(--accent),#ff9f43)">🚗<div class="online-dot" style="width:8px;height:8px"></div></div><div class="f-inf"><div class="f-nm">DrifterKing_UZ</div><div class="f-st">🎵 Musiqa</div></div></div>
+      <div class="f-item"><div class="f-av" style="background:linear-gradient(135deg,var(--tg),#1a7ab8)">👑<div class="online-dot" style="width:8px;height:8px"></div></div><div class="f-inf"><div class="f-nm">NightRider_T</div><div class="f-st">✈️ TG da</div></div></div>
+      <div class="f-item"><div class="f-av" style="background:linear-gradient(135deg,var(--wa),#1a9e4e)">😎</div><div class="f-inf"><div class="f-nm">PPF_Master</div><div class="f-st" style="color:var(--muted)">30 daq oldin</div></div></div>
+      <div class="f-item"><div class="f-av" style="background:linear-gradient(135deg,var(--accent3),var(--accent2))">🏁<div class="online-dot" style="width:8px;height:8px"></div></div><div class="f-inf"><div class="f-nm">AutoBek</div><div class="f-st">💬 WA da</div></div></div>
+    </div>
+  </div>
+
+  <!-- Tags -->
+  <div class="c">
+    <div class="c-hd">🔥 Trend</div>
+    <div class="tagcloud">
+      <span class="tag" onclick="toast('🔍','#PPF qidirilmoqda')">#PPF</span>
+      <span class="tag" onclick="toast('🔍','#Antigravity')">#Antigravity</span>
+      <span class="tag" onclick="toast('🔍','#Telegram')">#Telegram</span>
+      <span class="tag" onclick="toast('🔍','#Porsche')">#Porsche</span>
+      <span class="tag" onclick="toast('🔍','#Tuning')">#Tuning</span>
+      <span class="tag" onclick="toast('🔍','#Gemini')">#GeminiAI</span>
+      <span class="tag" onclick="toast('🔍','#BMW')">#BMW</span>
+      <span class="tag" onclick="toast('🔍','#Drift')">#Drift</span>
+    </div>
+  </div>
+</aside>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <div class="bnav-inner">
+    <button class="bb on" id="bb-feed" onclick="goPage('feed',null,null,this)">🏠<span>Lenta</span></button>
+    <button class="bb" id="bb-shop" onclick="goPage('shop',null,null,this)">🛒<span>Do'kon</span></button>
+    <button class="bb" id="bb-music" onclick="goPage('music',null,null,this)">🎵<span>Musiqa</span></button>
+    <button class="bb" id="bb-ai" onclick="goPage('ai',null,null,this)">🤖<span>AI</span></button>
+    <button class="bb" id="bb-settings" onclick="goPage('settings',null,null,this)">⚙️<span>Sozlama</span></button>
+  </div>
+</nav>
+
+<script>
+/* ═══ STATE ═══ */
+const S = {
+  coins: 100, posts: 4, playing: false, progVal: 32, progTmr: null,
+  curTrack: 0, radioOn: false, cart: [],
+  aiModel: 'gem', aiModelSide: 'gem',
+  tgToken: '', tgChat: '', waPhone: '', waGroup: '',
+  gemKey: '', gemModel: 'gemini-1.5-pro',
+  sysPrompt: `Sen Antigravity Hub AI yordamchisisiz. Toshkentdagi PPF va detailing markaz. Xizmatlar: Gloss PPF ($850), Satin PPF ($920), Ceramic ($450), Tinting ($280). Tel: +998 71 123-45-67. O'zbek tilida qisqa va do'stona javob ber.`
+};
+
+const tracks = [
+  {t:'Antigravity Drift',a:'DJ Antigravity',d:'03:42',img:'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800&auto=format&q=80'},
+  {t:'Night Ride Lofi',a:'CyberBeats UZ',d:'04:15',img:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&auto=format&q=80'},
+  {t:'Turbo Wave',a:'SynthDrive',d:'03:28',img:'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=800&auto=format&q=80'},
+  {t:'Carbon Fiber',a:'Antigravity',d:'05:01',img:'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&auto=format&q=80'}
+];
+
+const shopData = [
+  {id:1,nm:'Gloss PPF Premium',pr:850,old:1100,cat:'ppf',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&auto=format&q=80'},
+  {id:2,nm:'Satin Matte PPF',pr:920,old:1200,cat:'ppf',img:'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=400&auto=format&q=80'},
+  {id:3,nm:'Ceramic Coating Pro',pr:450,old:null,cat:'ceramic',img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&auto=format&q=80'},
+  {id:4,nm:'Premium Tinting',pr:280,old:350,cat:'tinting',img:'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&auto=format&q=80'},
+  {id:5,nm:'Chrome Delete',pr:180,old:null,cat:'acc',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&auto=format&q=80'},
+  {id:6,nm:'Full PPF Wrap',pr:2400,old:3000,cat:'ppf',img:'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=400&auto=format&q=80'},
+  {id:7,nm:'Headlight PPF',pr:120,old:null,cat:'ppf',img:'https://images.unsplash.com/photo-1542362567-b07e54358753?w=400&auto=format&q=80'},
+  {id:8,nm:'Matte Vinyl Wrap',pr:650,old:800,cat:'acc',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&auto=format&q=80'},
+];
+
+/* ═══ NAVIGATION ═══ */
+const pages = ['feed','shop','music','ai','settings'];
+function goPage(pg, hBtn, sItem, bBtn) {
+  pages.forEach(p => {
+    const el = document.getElementById('pg-'+p);
+    if(el) el.style.display = p===pg ? 'flex' : 'none';
+    if(el && p===pg) el.style.flexDirection = 'column';
+  });
+  // header btns
+  document.querySelectorAll('.hn-btn').forEach(b=>b.classList.remove('on'));
+  const hb = hBtn || document.getElementById('hn-'+pg);
+  if(hb) hb.classList.add('on');
+  // side menu
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('on'));
+  if(sItem) sItem.classList.add('on');
+  // bottom nav
+  document.querySelectorAll('.bb').forEach(b=>b.classList.remove('on'));
+  const bb = bBtn || document.getElementById('bb-'+pg);
+  if(bb) bb.classList.add('on');
+  // page init
+  if(pg==='shop') renderShop('all');
+  if(pg==='music') renderPlaylist();
+  if(pg==='ai') initAIFull();
+}
+
+/* ═══ TOAST ═══ */
+let toastTmr;
+function toast(ico, txt) {
+  document.getElementById('tIco').textContent = ico;
+  document.getElementById('tTxt').textContent = txt;
+  const el = document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(()=>el.classList.remove('show'), 2800);
+}
+
+/* ═══ MODALS ═══ */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');}));
+
+function saveProfil(){
+  const nm = document.getElementById('pName').value;
+  const hd = document.getElementById('pHandle').value;
+  document.getElementById('sNm').textContent = nm.toUpperCase();
+  document.getElementById('sHd').textContent = hd;
+  closeModal('profModal');
+  toast('✅','Profil saqlandi!');
+}
+
+/* ═══ POST ACTIONS ═══ */
+function likePost(btn, base) {
+  const liked = btn.classList.toggle('liked');
+  const sp = btn.querySelector('span');
+  sp.textContent = liked ? parseInt(sp.textContent)+1 : parseInt(sp.textContent)-1;
+  if(liked) toast('❤️','Like qo\'yildi!');
+}
+function addToPost(e){ const i = document.getElementById('compIn'); i.value+=e+' '; i.focus(); }
+function postSubmit(){
+  const inp = document.getElementById('compIn');
+  const txt = inp.value.trim();
+  if(!txt){ toast('⚠️','Matn kiriting!'); return; }
+  const html = `<div class="post" style="animation:fadeUp .4s ease">
+    <div class="ph"><div class="pa">🚗</div><div class="pm"><div class="p-auth">Cyber Driver <span class="pill or">Premium</span></div><div class="p-time">Hozir · Toshkent</div></div><button class="p-more">⋯</button></div>
+    <div class="p-txt">${txt.replace(/</g,'&lt;')}</div>
+    <div class="p-acts">
+      <button class="pab" onclick="likePost(this,0)">❤️ <span>0</span></button>
+      <button class="pab tg-act" onclick="shareToTG('${txt.substring(0,50).replace(/'/g,"\\'")}')">✈️ TG</button>
+      <button class="pab wa-act" onclick="shareToWA('${txt.substring(0,50).replace(/'/g,"\\'")}')">💬 WA</button>
+      <button class="pab" onclick="openShare()">📤 Share</button>
+    </div></div>`;
+  document.getElementById('postsFeed').insertAdjacentHTML('afterbegin', html);
+  const pc = document.getElementById('sPost'); pc.textContent = parseInt(pc.textContent)+1;
+  inp.value = ''; toast('✅','Post yuborildi!');
+  // auto-share if enabled
+  if(document.getElementById('tg-auto')?.checked) { setTimeout(()=>toast('✈️','Telegram ga avtomatik yuborildi!'),800); }
+}
+function doSearch(){ toast('🔍','Qidirilmoqda: '+document.getElementById('srchInp').value); }
+
+/* ═══ SHARE ═══ */
+let curShareTxt = 'Antigravity Hub — PPF & Detailing xizmati!';
+function openShare(txt){ curShareTxt = txt || curShareTxt; document.getElementById('sharePopup').classList.add('open'); }
+function closeShare(){ document.getElementById('sharePopup').classList.remove('open'); }
+document.getElementById('sharePopup').addEventListener('click',e=>{ if(e.target===document.getElementById('sharePopup')) closeShare(); });
+
+function shareToTG(txt){
+  const msg = encodeURIComponent((txt||curShareTxt)+'\n\nhttps://nexushub.uz');
+  const tgLink = S.tgChat ? `https://t.me/${S.tgChat.replace('@','')}` : `https://t.me/share/url?url=https://nexushub.uz&text=${msg}`;
+  window.open(tgLink,'_blank');
+  toast('✈️','Telegram ga yuborildi!');
+  closeShare();
+}
+function shareToWA(txt){
+  const msg = encodeURIComponent((txt||curShareTxt)+'\n\nhttps://nexushub.uz');
+  const ph = S.waPhone ? S.waPhone.replace(/\D/g,'') : '';
+  const link = ph ? `https://wa.me/${ph}?text=${msg}` : `https://wa.me/?text=${msg}`;
+  window.open(link,'_blank');
+  toast('💬','WhatsApp ga yuborildi!');
+  closeShare();
+}
+function openTelegram(){
+  const link = S.tgChat ? `https://t.me/${S.tgChat.replace('@','')}` : 'https://t.me/nexushub_uz';
+  window.open(link,'_blank');
+  toast('✈️','Telegram ochilmoqda...');
+}
+function openWhatsApp(){
+  const ph = S.waPhone ? S.waPhone.replace(/\D/g,'') : '';
+  const link = S.waGroup ? S.waGroup : (ph ? `https://wa.me/${ph}` : 'https://wa.me/998901234567');
+  window.open(link,'_blank');
+  toast('💬','WhatsApp ochilmoqda...');
+}
+function copyLink(){
+  const inp = document.getElementById('shareLinkInp');
+  navigator.clipboard?.writeText(inp.value).catch(()=>{});
+  toast('🔗','Havola nusxalandi!');
+  closeShare();
+}
+
+/* ═══ CART ═══ */
+function toggleCart(){ document.getElementById('cartPop').classList.toggle('open'); }
+document.addEventListener('click',e=>{
+  const cp = document.getElementById('cartPop');
+  if(cp.classList.contains('open')&&!cp.contains(e.target)&&!e.target.closest('.hdr-coin')) cp.classList.remove('open');
+});
+function addCart(btn,nm,pr,img){
+  if(S.cart.find(i=>i.nm===nm)){ toast('⚠️','Allaqachon savatda!'); return; }
+  S.cart.push({nm,pr,img});
+  if(btn){ btn.classList.add('added'); btn.textContent='✅ Qo\'shildi'; }
+  renderCart(); toast('🛒',nm+' savatga qo\'shildi!');
+}
+function removeFromCart(i){ S.cart.splice(i,1); renderCart(); }
+function renderCart(){
+  const list = document.getElementById('cartList');
+  const cnt = document.getElementById('cartCnt');
+  const tot = document.getElementById('cartTot');
+  const total = S.cart.reduce((s,i)=>s+i.pr,0);
+  cnt.textContent = `(${S.cart.length})`;
+  tot.textContent = '$'+total.toLocaleString();
+  if(!S.cart.length){ list.innerHTML='<div class="cart-empty">Savat bo\'sh 🛒</div>'; return; }
+  list.innerHTML = S.cart.map((it,i)=>`<div class="cart-item"><img class="ci-img" src="${it.img}" alt=""><div class="ci-nm">${it.nm}</div><div class="ci-pr">$${it.pr}</div><button class="ci-rm" onclick="removeFromCart(${i})">×</button></div>`).join('');
+}
+function checkout(){
+  if(!S.cart.length){ toast('⚠️','Savat bo\'sh!'); return; }
+  S.cart=[];renderCart();
+  document.getElementById('cartPop').classList.remove('open');
+  toast('✅','Buyurtma qabul qilindi! Tez orada aloqaga chiqamiz.');
+  if(S.waPhone) setTimeout(()=>openWhatsApp(),1000);
+}
+
+/* ═══ SHOP ═══ */
+function renderShop(cat){
+  document.querySelectorAll('.sf-btn').forEach(b=>b.classList.remove('on'));
+  event?.target?.classList.add('on');
+  const items = cat==='all' ? shopData : shopData.filter(i=>i.cat===cat);
+  document.getElementById('shopGrid').innerHTML = items.map(it=>`
+    <div class="shop-tile">
+      <img class="st-img" src="${it.img}" alt="">
+      <div class="st-body">
+        <div class="pt-nm">${it.nm}</div>
+        <div style="margin:4px 0"><span class="pt-pr">$${it.pr}</span>${it.old?`<span class="pt-old">$${it.old}</span>`:''}</div>
+        <button class="pt-btn" onclick="addCart(this,'${it.nm}',${it.pr},'${it.img.replace('400','80')}')">🛒 Savatga</button>
+      </div>
+    </div>`).join('');
+}
+function filterShop(cat,btn){
+  document.querySelectorAll('.sf-btn').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const items = cat==='all' ? shopData : shopData.filter(i=>i.cat===cat);
+  document.getElementById('shopGrid').innerHTML = items.map(it=>`
+    <div class="shop-tile">
+      <img class="st-img" src="${it.img}" alt="">
+      <div class="st-body">
+        <div class="pt-nm">${it.nm}</div>
+        <div style="margin:4px 0"><span class="pt-pr">$${it.pr}</span>${it.old?`<span class="pt-old">$${it.old}</span>`:''}</div>
+        <button class="pt-btn" onclick="addCart(this,'${it.nm}',${it.pr},'${it.img.replace('400','80')}')">🛒 Savatga</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══ MUSIC ═══ */
+function renderPlaylist(){
+  document.getElementById('playlistEl').innerHTML = tracks.map((t,i)=>`
+    <div style="display:flex;align-items:center;gap:9px;padding:8px 12px;cursor:pointer;background:${i===S.curTrack?'var(--card2)':'transparent'};transition:background var(--tr)"
+      onmouseenter="this.style.background='var(--card2)'" onmouseleave="this.style.background='${i===S.curTrack?'var(--card2)':'transparent'}'"
+      onclick="selectTrack(${i})">
+      <div style="width:34px;height:26px;border-radius:5px;overflow:hidden;flex-shrink:0"><img src="${t.img.replace('800','60')}" style="width:100%;height:100%;object-fit:cover" alt=""></div>
+      <div style="flex:1"><div style="font-size:11.5px;font-weight:600;color:${i===S.curTrack?'var(--accent)':'var(--text)'}">${t.t}</div><div style="font-size:10px;color:var(--muted)">${t.a}</div></div>
+      <div style="font-size:10px;color:var(--muted)">${t.d}</div>
+      ${i===S.curTrack?'<div style="color:var(--accent);font-size:12px">▶</div>':''}
+    </div>`).join('');
+}
+function selectTrack(i){
+  S.curTrack=i; const t=tracks[i];
+  ['tr-title','mp-title'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t.t;});
+  ['tr-art','mp-art'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t.a;});
+  const mi=document.getElementById('mpImg'); if(mi)mi.src=t.img;
+  S.progVal=0; updProg(); renderPlaylist();
+  toast('🎵',t.t+' — ijro etilmoqda');
+}
+function prevTr(){ S.curTrack=(S.curTrack-1+tracks.length)%tracks.length; selectTrack(S.curTrack); }
+function nextTr(){ S.curTrack=(S.curTrack+1)%tracks.length; selectTrack(S.curTrack); }
+function togglePlay(){
+  S.playing=!S.playing;
+  const ico = S.playing?'⏸':'▶';
+  ['mainPB','mpPB'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ico;});
+  if(S.playing){
+    S.progTmr=setInterval(()=>{
+      S.progVal=Math.min(100,S.progVal+.25);
+      updProg();
+      if(S.progVal>=100){nextTr();S.progVal=0;}
+    },100);
+    toast('🎵','Ijro: '+tracks[S.curTrack].t);
+  } else {
+    clearInterval(S.progTmr);
+    toast('⏸','Pauza');
+  }
+}
+function updProg(){
+  document.querySelectorAll('.prog-fill').forEach(f=>f.style.width=S.progVal+'%');
+  const sec=Math.round(S.progVal/100*222);
+  const m=Math.floor(sec/60),s=sec%60;
+  const ts=m+':'+(s<10?'0':'')+s;
+  ['pt-cur','mp-cur'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ts;});
+}
+function seekProg(e,bar){ S.progVal=e.offsetX/bar.offsetWidth*100; updProg(); }
+
+/* ═══ AI FULL PAGE ═══ */
+let aiFullInited=false;
+function initAIFull(){
+  if(aiFullInited) return; aiFullInited=true;
+  appendMsg('aiMsgsFull','bot',S.aiModel,'👋 Assalomu alaykum! Men Antigravity Hub AI yordamchisiman. PPF, ceramic coating, mashina himoyasi haqida savollaringizga javob beraman. Qanday yordam bera olaman?');
+}
+function setAIModel(m){
+  S.aiModel=m;
+  ['gem','cl','tg'].forEach(k=>{
+    const b=document.getElementById('abtn-'+k);
+    if(b){b.classList.remove('on','gem','cl','tg');if(k===m)b.classList.add('on',m);}
+  });
+  const lbl=document.getElementById('aiModelLbl');
+  if(lbl) lbl.textContent = m==='gem'?'Gemini Pro':m==='cl'?'Claude Sonnet':'Telegram Bot';
+  toast('🤖','Model: '+(m==='gem'?'Gemini Pro':m==='cl'?'Claude Sonnet':'Telegram Bot'));
+}
+async function sendAI(){
+  const inp=document.getElementById('aiInpFull');
+  const txt=inp.value.trim(); if(!txt) return;
+  appendMsg('aiMsgsFull','user',null,txt);
+  document.getElementById('aiQP').style.display='none';
+  inp.value='';
+  await callAI(txt,'aiMsgsFull',S.aiModel);
+}
+function sendQ(txt){ document.getElementById('aiInpFull').value=txt; sendAI(); }
+
+/* ═══ AI SIDEBAR ═══ */
+let sideInited=false;
+function switchAIWidget(m){
+  S.aiModelSide=m;
+  ['gem','cl','tg'].forEach(k=>{
+    const b=document.getElementById('sw-'+k);
+    if(b){b.classList.remove('on','gem','cl','tg');if(k===m)b.classList.add('on',m);}
+  });
+  const ico=document.getElementById('aiWidgetIco');
+  const nm=document.getElementById('aiWidgetNm');
+  if(m==='gem'){if(ico)ico.textContent='G';if(nm)nm.textContent='Gemini Pro';}
+  else if(m==='cl'){if(ico)ico.textContent='C';if(nm)nm.textContent='Claude Sonnet';}
+  else{if(ico)ico.textContent='✈️';if(nm)nm.textContent='TG Bot';}
+  toast('🤖','Widget: '+(m==='gem'?'Gemini Pro':m==='cl'?'Claude Sonnet':'Telegram Bot'));
+}
+async function sendSideAI(){
+  const inp=document.getElementById('sideAIIn');
+  const txt=inp.value.trim(); if(!txt) return;
+  appendMsg('sideAIMsgs','user',null,txt); inp.value='';
+  const prompt=`Mashina/savol: "${txt}". PPF tavsiyasi ber. O'zbek tilida 1-2 jumlada.`;
+  await callAI(prompt,'sideAIMsgs',S.aiModelSide);
+}
+function sideQ(txt){ document.getElementById('sideAIIn').value=txt; sendSideAI(); }
+
+/* ═══ AI ENGINE ═══ */
+function appendMsg(container,role,model,text){
+  const el=document.getElementById(container); if(!el) return;
+  const d=document.createElement('div');
+  d.className='ai-msg '+(role==='user'?'usr':'bot');
+  const avClass = role==='user'?'u':(model==='gem'?'bot-gem':'bot-cl');
+  const avTxt = role==='user'?'🚗':(model==='gem'?'G':'C');
+  d.innerHTML=`<div class="ai-av ${avClass}">${avTxt}</div><div class="ai-bub">${text.replace(/\n/g,'<br>')}</div>`;
+  el.appendChild(d); el.scrollTop=el.scrollHeight;
+}
+function showTyping(container,model){
+  const el=document.getElementById(container); if(!el) return;
+  const d=document.createElement('div');
+  d.className='ai-msg bot'; d.id='typ_'+container;
+  const avClass=model==='gem'?'bot-gem':'bot-cl';
+  const avTxt=model==='gem'?'G':'C';
+  d.innerHTML=`<div class="ai-av ${avClass}">${avTxt}</div><div class="ai-bub"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  el.appendChild(d); el.scrollTop=el.scrollHeight;
+}
+function hideTyping(container){ const el=document.getElementById('typ_'+container); if(el)el.remove(); }
+
+async function callAI(msg, container, model){
+  if(model==='tg'){
+    showTyping(container,'cl');
+    await new Promise(r=>setTimeout(r,1000));
+    hideTyping(container);
+    appendMsg(container,'bot','cl','✈️ Telegram Bot tez orada javob beradi! Bot token va chat ID ni Sozlamalar sahifasida ulang.');
+    return;
+  }
+  // Gemini API
+  if(model==='gem'){
+    if(!S.gemKey){
+      // Fallback to Claude
+      await callClaude(msg,container);
+      return;
+    }
+    showTyping(container,'gem');
+    try{
+      const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${S.gemModel}:generateContent?key=${S.gemKey}`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:S.sysPrompt}]},
+          contents:[{parts:[{text:msg}]}]
+        })
+      });
+      const data=await res.json();
+      hideTyping(container);
+      const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'Javob olishda xato.';
+      appendMsg(container,'bot','gem',text);
+    }catch(e){
+      hideTyping(container);
+      appendMsg(container,'bot','gem','⚠️ Gemini API xatosi. Claude ga o\'tilmoqda...');
+      await callClaude(msg,container);
+    }
+    return;
+  }
+  // Claude
+  await callClaude(msg,container);
+}
+
+async function callClaude(msg, container){
+  showTyping(container,'cl');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:1000,
+        system:S.sysPrompt,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data=await res.json();
+    hideTyping(container);
+    const text=data.content?.[0]?.text||'Javob olishda xato yuz berdi.';
+    appendMsg(container,'bot','cl',text);
+  }catch(e){
+    hideTyping(container);
+    appendMsg(container,'bot','cl','⚠️ Tarmoq xatosi. Qayta urinib ko\'ring.');
+  }
+}
+
+/* ═══ SETTINGS ACTIONS ═══ */
+function saveSetting(type){
+  const val=document.getElementById('st-'+type)?.value;
+  if(type==='name'){ document.getElementById('sNm').textContent=val.toUpperCase(); }
+  toast('✅',type+' saqlandi!'); saveToStorage();
+}
+function togSetting(key,el){ S[key]=el.checked; toast(el.checked?'✅':'❌',key+(el.checked?' yoqildi':' o\'chirildi')); saveToStorage(); }
+function saveTGToken(){ S.tgToken=document.getElementById('tg-token').value; toast('✈️','Telegram token saqlandi!'); saveToStorage(); }
+function saveTGChat(){ S.tgChat=document.getElementById('tg-chat').value; toast('✈️','TG chat saqlandi: '+S.tgChat); saveToStorage(); }
+function saveWAPhone(){ S.waPhone=document.getElementById('wa-phone').value; toast('💬','WhatsApp raqam saqlandi!'); saveToStorage(); }
+function saveWAGroup(){ S.waGroup=document.getElementById('wa-group').value; toast('💬','WA guruh havolasi saqlandi!'); saveToStorage(); }
+function saveGemKey(){ S.gemKey=document.getElementById('gem-key').value; toast('🔷','Gemini API key saqlandi!'); saveToStorage(); }
+function saveGemModel(){ S.gemModel=document.getElementById('gem-model').value; toast('🔷','Gemini model: '+S.gemModel); saveToStorage(); }
+function editSysPrompt(){
+  const np=prompt('Tizim xabari (system prompt):', S.sysPrompt);
+  if(np){ S.sysPrompt=np; toast('✅','System prompt saqlandi!'); saveToStorage(); }
+}
+function setLang(lang){ toast('🌐','Til: '+lang+' (tez orada)'); }
+function clearCache(){ localStorage.removeItem('nexushub'); toast('🗑','Kesh tozalandi!'); }
+function connectTG(){ openTelegram(); }
+
+// LocalStorage
+function saveToStorage(){
+  try{
+    localStorage.setItem('nexushub',JSON.stringify({
+      tgToken:S.tgToken,tgChat:S.tgChat,waPhone:S.waPhone,
+      waGroup:S.waGroup,gemKey:S.gemKey,gemModel:S.gemModel,sysPrompt:S.sysPrompt
+    }));
+  }catch(e){}
+}
+function loadFromStorage(){
+  try{
+    const d=JSON.parse(localStorage.getItem('nexushub')||'{}');
+    if(d.tgToken){S.tgToken=d.tgToken;const el=document.getElementById('tg-token');if(el)el.value=d.tgToken;}
+    if(d.tgChat){S.tgChat=d.tgChat;const el=document.getElementById('tg-chat');if(el)el.value=d.tgChat;}
+    if(d.waPhone){S.waPhone=d.waPhone;const el=document.getElementById('wa-phone');if(el)el.value=d.waPhone;}
+    if(d.waGroup){S.waGroup=d.waGroup;const el=document.getElementById('wa-group');if(el)el.value=d.waGroup;}
+    if(d.gemKey){S.gemKey=d.gemKey;const el=document.getElementById('gem-key');if(el)el.value=d.gemKey;}
+    if(d.gemModel){S.gemModel=d.gemModel;const el=document.getElementById('gem-model');if(el)el.value=d.gemModel;}
+    if(d.sysPrompt){S.sysPrompt=d.sysPrompt;}
+  }catch(e){}
+}
+
+/* ═══ INIT ═══ */
+loadFromStorage();
+goPage('feed');
+// Sidebar AI greeting
+setTimeout(()=>appendMsg('sideAIMsgs','bot','gem','👋 Mashinangizni yozing — eng mos PPF tavsiyasi beraman! 🚗'),600);
+// Search
+document.getElementById('srchInp').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+// Progress sync
+setInterval(()=>{
+  if(S.playing){ S.progVal=Math.min(100,S.progVal+.25); updProg(); if(S.progVal>=100){nextTr();S.progVal=0;} }
+},100);
+</script>
+</body>
+</html>
